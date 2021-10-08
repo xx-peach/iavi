@@ -1,0 +1,187 @@
+<?xml version="1.0"?>
+<opencv_storage>
+<images>
+    <!-- images/scaled/circle/1.jpg
+    images/scaled/circle/2.jpg
+    images/scaled/circle/3.jpg
+    images/scaled/circle/4.jpg
+    images/scaled/circle/5.jpg
+    images/scaled/circle/6.jpg
+    images/scaled/circle/7.jpg
+    images/scaled/circle/8.jpg
+    images/scaled/circle/9.jpg -->
+
+    <!-- images/scaled/number/1.png
+    images/scaled/number/2.png
+    images/scaled/number/3.png
+    images/scaled/number/4.png
+    images/scaled/number/5.png
+    images/scaled/number/6.png
+    images/scaled/number/7.png
+    images/scaled/number/8.png
+    images/scaled/number/9.png
+    images/scaled/number/10.png
+    images/scaled/number/11.png
+    images/scaled/number/12.png
+    images/scaled/number/13.png
+    images/scaled/number/14.png
+    images/scaled/number/15.png
+    images/scaled/number/16.png
+    images/scaled/number/17.png
+    images/scaled/number/18.png
+    images/scaled/number/19.png
+    images/scaled/number/20.png
+    images/scaled/number/21.png
+    images/scaled/number/22.png
+    images/scaled/number/23.png
+    images/scaled/number/24.png
+    images/scaled/number/25.png
+    images/scaled/number/26.png
+    images/scaled/number/27.png
+    images/scaled/number/28.png
+    images/scaled/number/29.png
+    images/scaled/number/30.png
+    images/scaled/number/31.png
+    images/scaled/number/32.png
+    images/scaled/number/33.png
+    images/scaled/number/34.png
+    images/scaled/number/35.png
+    images/scaled/number/36.png
+    images/scaled/number/37.png
+    images/scaled/number/38.png
+    images/scaled/number/39.png
+    images/scaled/number/40.png
+    images/scaled/number/41.png
+    images/scaled/number/42.png
+    images/scaled/number/43.png
+    images/scaled/number/44.png
+    images/scaled/number/45.png
+    images/scaled/number/46.png
+    images/scaled/number/47.png
+    images/scaled/number/48.png
+    images/scaled/number/49.png
+    images/scaled/number/50.png -->
+
+    <!-- images/scaled/angle/angle1/1.png
+    images/scaled/angle/angle1/2.png
+    images/scaled/angle/angle1/3.png
+    images/scaled/angle/angle1/4.png
+    images/scaled/angle/angle1/5.png
+    images/scaled/angle/angle1/6.png
+    images/scaled/angle/angle1/7.png
+    images/scaled/angle/angle1/8.png
+    images/scaled/angle/angle1/9.png
+    images/scaled/angle/angle1/10.png -->
+
+    <!-- images/scaled/angle/angle2/1.png
+    images/scaled/angle/angle2/2.png
+    images/scaled/angle/angle2/3.png
+    images/scaled/angle/angle2/4.png
+    images/scaled/angle/angle2/5.png
+    images/scaled/angle/angle2/6.png
+    images/scaled/angle/angle2/7.png
+    images/scaled/angle/angle2/8.png
+    images/scaled/angle/angle2/9.png
+    images/scaled/angle/angle2/10.png -->
+
+    <!-- images/scaled/angle/angle3/1.png
+    images/scaled/angle/angle3/2.png
+    images/scaled/angle/angle3/3.png
+    images/scaled/angle/angle3/4.png
+    images/scaled/angle/angle3/5.png
+    images/scaled/angle/angle3/6.png
+    images/scaled/angle/angle3/7.png
+    images/scaled/angle/angle3/8.png
+    images/scaled/angle/angle3/9.png
+    images/scaled/angle/angle3/10.png -->
+
+    <!-- images/scaled/angle/angle4/1.png
+    images/scaled/angle/angle4/2.png
+    images/scaled/angle/angle4/3.png
+    images/scaled/angle/angle4/4.png
+    images/scaled/angle/angle4/5.png
+    images/scaled/angle/angle4/6.png
+    images/scaled/angle/angle4/7.png
+    images/scaled/angle/angle4/8.png
+    images/scaled/angle/angle4/9.png
+    images/scaled/angle/angle4/10.png -->
+
+    <!-- images/scaled/angle/angle5/1.png
+    images/scaled/angle/angle5/2.png
+    images/scaled/angle/angle5/3.png
+    images/scaled/angle/angle5/4.png
+    images/scaled/angle/angle5/5.png
+    images/scaled/angle/angle5/6.png
+    images/scaled/angle/angle5/7.png
+    images/scaled/angle/angle5/8.png
+    images/scaled/angle/angle5/9.png
+    images/scaled/angle/angle5/10.png -->
+<!-- 
+    images/scaled/cover/1.png
+    images/scaled/cover/2.png
+    images/scaled/cover/3.png
+    images/scaled/cover/4.png
+    images/scaled/cover/5.png
+    images/scaled/cover/6.png
+    images/scaled/cover/7.png
+    images/scaled/cover/8.png
+    images/scaled/cover/9.png -->
+
+    
+    <!-- images/scaled/size/s1/1.png
+    images/scaled/size/s1/2.png
+    images/scaled/size/s1/3.png
+    images/scaled/size/s1/4.png
+    images/scaled/size/s1/5.png
+    images/scaled/size/s1/6.png
+    images/scaled/size/s1/7.png
+    images/scaled/size/s1/8.png
+    images/scaled/size/s1/9.png
+    images/scaled/size/s1/10.png -->
+
+    <!-- images/scaled/size/s2/1.png
+    images/scaled/size/s2/2.png
+    images/scaled/size/s2/3.png
+    images/scaled/size/s2/4.png
+    images/scaled/size/s2/5.png
+    images/scaled/size/s2/6.png
+    images/scaled/size/s2/7.png
+    images/scaled/size/s2/8.png
+    images/scaled/size/s2/9.png
+    images/scaled/size/s2/10.png -->
+
+    <!-- images/scaled/size/s3/1.png
+    images/scaled/size/s3/2.png
+    images/scaled/size/s3/3.png
+    images/scaled/size/s3/4.png
+    images/scaled/size/s3/5.png
+    images/scaled/size/s3/6.png
+    images/scaled/size/s3/7.png
+    images/scaled/size/s3/8.png
+    images/scaled/size/s3/9.png
+    images/scaled/size/s3/10.png -->
+
+    <!-- images/scaled/size/s4/1.png
+    images/scaled/size/s4/2.png
+    images/scaled/size/s4/3.png
+    images/scaled/size/s4/4.png
+    images/scaled/size/s4/5.png
+    images/scaled/size/s4/6.png
+    images/scaled/size/s4/7.png
+    images/scaled/size/s4/8.png
+    images/scaled/size/s4/9.png
+    images/scaled/size/s4/10.png -->
+
+    images/scaled/size/s5/1.png
+    images/scaled/size/s5/2.png
+    images/scaled/size/s5/3.png
+    images/scaled/size/s5/4.png
+    images/scaled/size/s5/5.png
+    images/scaled/size/s5/6.png
+    images/scaled/size/s5/7.png
+    images/scaled/size/s5/8.png
+    images/scaled/size/s5/9.png
+    images/scaled/size/s5/10.png
+
+</images>
+</opencv_storage>
