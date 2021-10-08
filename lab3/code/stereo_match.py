@@ -35,16 +35,22 @@ def write_ply(fn, verts, colors):
 
 def main():
     print('loading images...')
-    imgL = cv.pyrDown(cv.imread(cv.samples.findFile('aloeL.jpg')))  # downscale images for faster processing
-    imgR = cv.pyrDown(cv.imread(cv.samples.findFile('aloeR.jpg')))
+    imgL = cv.imread(cv.samples.findFile('./cupL.png'))
+    imgR = cv.imread(cv.samples.findFile('./cupR.png'))
+    imgL = cv.resize(imgL, (imgL.shape[1] // 2, imgL.shape[0] // 2))
+    imgR = cv.resize(imgR, (imgR.shape[1] // 2, imgR.shape[0] // 2))
+    imgL = cv.pyrDown(imgL)
+    imgR = cv.pyrDown(imgR)
+    # imgL = cv.pyrDown(cv.imread(cv.samples.findFile('aloeL.jpg')))  # downscale images for faster processing
+    # imgR = cv.pyrDown(cv.imread(cv.samples.findFile('aloeR.jpg')))
 
     # disparity range is tuned for 'aloe' image pair
-    window_size = 3
+    window_size = 11
     min_disp = 16
-    num_disp = 112-min_disp
+    num_disp = 128 - min_disp
     stereo = cv.StereoSGBM_create(minDisparity = min_disp,
         numDisparities = num_disp,
-        blockSize = 16,
+        blockSize = 8,
         P1 = 8*3*window_size**2,
         P2 = 32*3*window_size**2,
         disp12MaxDiff = 1,
@@ -58,11 +64,20 @@ def main():
 
     print('generating 3d point cloud...',)
     h, w = imgL.shape[:2]
-    f = 0.8*w                          # guess for focal length
-    Q = np.float32([[1, 0, 0, -0.5*w],
-                    [0,-1, 0,  0.5*h], # turn points 180 deg around x-axis,
-                    [0, 0, 0,     -f], # so that y-axis looks up
-                    [0, 0, 1,      0]])
+    # f = 0.8*w                          # guess for focal length
+    f = 394.59508339
+    Q = np.float32([[1, 0,  0, -0.5*w],
+                    [0, -1, 0, 0.5*h], # turn points 180 deg around x-axis,
+                    [0, 0,  0, -f], # so that y-axis looks up
+                    [0, 0,  1, 0]])
+    # Q = np.float32([[1, 0, 0, 0],
+    #             [0, -1, 0, 0], # turn points 180 deg around x-axis,
+    #             [0, 0, 0, -f], # so that y-axis looks up
+    #             [0, 0, 1, 0]])
+    # Q = np.float32([[1, 0, 0, 0],
+    #                 [0, 1, 0, 0],
+    #                 [0, 0, 1, 0],
+    #                 [0, 0, 0, 1]])
     points = cv.reprojectImageTo3D(disp, Q)
     colors = cv.cvtColor(imgL, cv.COLOR_BGR2RGB)
     mask = disp > disp.min()
