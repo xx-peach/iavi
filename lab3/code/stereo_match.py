@@ -44,21 +44,21 @@ def main():
     # imgR = cv.pyrDown(cv.imread(cv.samples.findFile('aloeR.jpg')))
 
     # disparity range is tuned for 'aloe' image pair
-    window_size = 11
-    # min_disp = 16
-    # num_disp = 128 - min_disp
+    window_size = 5
     min_disp = 4
-    num_disp = 20-min_disp
+    num_disp = 76 - min_disp
+    # min_disp = 4
+    # num_disp = 20-min_disp
     stereo = cv.StereoSGBM_create(minDisparity = min_disp,
         numDisparities = num_disp,
-        blockSize = 8,
+        blockSize = 4,
         P1 = 8*3*window_size**2,
         P2 = 32*3*window_size**2,
         disp12MaxDiff = 1,
         uniquenessRatio = 10,
         speckleWindowSize = 100,
-        speckleRange = 32,
-        mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY
+        speckleRange = 100,
+        # mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY
     )
 
     print('computing disparity...')
