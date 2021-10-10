@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 
 '''
 Simple example of stereo image matching and point cloud generation.
@@ -35,8 +34,8 @@ def write_ply(fn, verts, colors):
 
 def main():
     print('loading images...')
-    imgL = cv.imread(cv.samples.findFile('./cupL.png'))
-    imgR = cv.imread(cv.samples.findFile('./cupR.png'))
+    imgL = cv.imread('./cupL.png')
+    imgR = cv.imread('./cupR.png')
     imgL = cv.resize(imgL, (imgL.shape[1] // 2, imgL.shape[0] // 2))
     imgR = cv.resize(imgR, (imgR.shape[1] // 2, imgR.shape[0] // 2))
     imgL = cv.pyrDown(imgL)
@@ -46,8 +45,10 @@ def main():
 
     # disparity range is tuned for 'aloe' image pair
     window_size = 11
-    min_disp = 16
-    num_disp = 128 - min_disp
+    # min_disp = 16
+    # num_disp = 128 - min_disp
+    min_disp = 4
+    num_disp = 20-min_disp
     stereo = cv.StereoSGBM_create(minDisparity = min_disp,
         numDisparities = num_disp,
         blockSize = 8,
@@ -56,7 +57,8 @@ def main():
         disp12MaxDiff = 1,
         uniquenessRatio = 10,
         speckleWindowSize = 100,
-        speckleRange = 32
+        speckleRange = 32,
+        mode=cv2.STEREO_SGBM_MODE_SGBM_3WAY
     )
 
     print('computing disparity...')

@@ -69,13 +69,23 @@ As shown in the figure, the two pictures have been aligned perfectly.
 
 ### Resolve color discrepancy
 
+There are many different ways to resolve the color discrepancy between two views and paint the 3D point cloud we derived from the previous steps. For example, the basic method is to directly use the color information from the left view image or the right view. Though it's a quite simple method, the result matches the original images quite well:
 
+<img src="./images/left_color.png" style="zoom:50%;" />
 
+<center style="color:#707070">Figure 1: 3D point cloud painted with color of left view</center>
 
+<img src="./images/right_color.png" style="zoom:50%;" />
+
+<center style="color:#707070">Figure 2: 3D point cloud painted with color of right view</center>
+
+In order to fully utilize the color information from two views, our group came up with an idea to combine and average the color of two pictures together. The underlying method is quite simple. Since two pictures capture the same scene and the only difference is the viewing angle, we can discard the information of position and only focus on the layout of colors. We can achieve that by doing an `SVD decomposition`, i.e, breaking down each channel to the form $A = U\Sigma V^T$. The matrix $\Sigma$ can be seen as the one contains most of the energy information of colors so that we can use the average of $\Sigma_{left}  $ and $\Sigma_{right}$ to recover the combination of colors from two views. The result is shown below:
+
+<img src="./images/avg_color.png" style="zoom:50%;" />
+
+<center style="color:#707070">Figure 3: 3D point cloud painted with color of right view</center>
 
 ## Thoughts
-
-
 
 
 
