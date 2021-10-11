@@ -59,9 +59,27 @@ As shown in the figure, the two pictures have been aligned perfectly.
 
 ### 3.2 Compute a depth map
 
-After we get the images that can be used in 3D reconstruction, we can 
+After we get the images that can be used in 3D reconstruction, we can get the depth map and point cloud using the function and classes derived from  `cv2.StereoSGBM_create()` provided by `opencv`.
 
+To be precise, `SGBM` is the shortcut for Semi-Global Block Matching and is developed from `SGM` algorithm.
 
+The image below shows the basic steps of `SGBM`:
+
+<img src="./images/sgbm.jpg" alt="SGBM" style="zoom:50%;" />
+
+The output of the `SGBM` is disparity, and the formula to compute the depth from disparity is:
+$$
+\text{Depth} = \text{Baseline} \times \frac{\text{focal length}}{\text{disparity}}
+$$
+After computing the depth, we could resize the value of each pixel into $[0, 1]$ to get a gray scale image. 
+
+We give an example of the output depth map as follows.
+
+More results would be shown in the section 3.3.
+
+<img src="./images/dw10.png" style="zoom:50%;" />
+
+The parameters of `SGBM` algorithm would greatly influence the quality of the final output, which will be discussed in the next section.
 
 ### 3.3 Study the influence of different parameters
 
@@ -287,9 +305,146 @@ for l_img, r_img in pairs:
     cv2.imwrite("./images/lab3/scaled/calibration_result/right/"+str(i + 1)+".jpg", r_dst)
     i = i + 1
 
-##############################
-#                            #
-##############################
+# 利用上面步骤得到的单独相机的矩阵进行立体矫正
+# 以下是可以根据实际情况进行调节的一系列参数
+flags = 0
+flags |= cv2.CALIB_FIX_INTRINSIC
+flags |= cv2.CALIB_SAME_FOCAL_LENGTH
+flags |= cv2.CALIB_FIX_FOCAL_LENGTH
+flags |= cv2.CALIB_FIX_ASPECT_RATIO
+flags |= cv2.CALIB_FIX_K1
+flags |= cv2.CALIB_FIX_K2
+flags |= cv2.CALIB_FIX_K3
+flags |= cv2.CALIB_FIX_K4
+flags |= cv2.CALIB_FIX_K5
 
+stereo_criteria = (cv2.TERM_CRITERIA_MAX_ITER + cv2.TERM_CRITERIA_EPS, 100, 1e-5)
+
+ret, Camera1Mat, Dist1, Camera2Mat, Dist2, R, T, E, F = cv2.stereoCalibrate(obj_points, left_img_points, right_img_points, l_mtx, l_dist, r_mtx, r_dist, imageSize=l_size, criteria=stereo_criteria, flags = flags)
+
+#########################################
+#      perform stereo rectification     #
+#########################################
+img_L = cv2.imread("../../../images/lab3/scaled/calibration_result/left/1.jpg")
+img_R = cv2.imread("../../../images/lab3/scaled/calibration_result/right/1.jpg")
+
+img_size = img_L.shape[:2][::-1]
+
+# 立体矫正图片，便于之后的深度图重建
+R1, R2, P1, P2, Q, roi_left, roi_right = cv2.stereoRectify(Camera1Mat, Dist1, Camera2Mat, Dist2, img_size, R, T, flags = 1)
+left_map1, left_map2 = cv2.initUndistortRectifyMap(Camera1Mat, Dist1, R1, P1, img_size, cv2.CV_16SC2)
+right_map1, right_map2 = cv2.initUndistortRectifyMap(Camera2Mat, Dist2, R2, P2, img_size, cv2.CV_16SC2)
+
+result_l = cv2.remap(img_L, left_map1, left_map2, cv2.INTER_LINEAR)
+result_r = cv2.remap(img_R, left_map1, left_map2, cv2.INTER_LINEAR)
+
+#########################################
+# reconstruct depth map and point cloud #
+#########################################
+import cv2 as cv
+ply_header = '''ply
+format ascii 1.0
+element vertex %(vert_num)d
+property float x
+property float y
+property float z
+property uchar red
+property uchar green
+property uchar blue
+end_header
+'''
+
+# write_ply函数用于保存生成的3D点云
+def write_ply(fn, verts, colors):
+    verts = verts.reshape(-1, 3)
+    colors = colors.reshape(-1, 3)
+    verts = np.hstack([verts, colors])
+    with open(fn, 'wb') as f:
+        f.write((ply_header % dict(vert_num=len(verts))).encode('utf-8'))
+        np.savetxt(f, verts, fmt='%f %f %f %d %d %d ')
+        
+print('loading images...')
+imgL = cv.imread('./cupL.png')
+imgR = cv.imread('./cupR.png')
+imgL = cv.resize(imgL, (imgL.shape[1] // 2, imgL.shape[0] // 2))
+imgR = cv.resize(imgR, (imgR.shape[1] // 2, imgR.shape[0] // 2))
+imgL = cv.pyrDown(imgL)
+imgR = cv.pyrDown(imgR)
+
+# disparity range is tuned for the 'cup' image
+window_size = 11
+min_disp = 16
+num_disp = 128 - min_disp
+
+# create the class to do SGBM
+stereo = cv.StereoSGBM_create(minDisparity = min_disp,
+    numDisparities = num_disp,
+    blockSize = 8,
+    P1 = 8*3*window_size**2,
+    P2 = 32*3*window_size**2,
+    disp12MaxDiff = 1,
+    uniquenessRatio = 10,
+    speckleWindowSize = 100,
+    speckleRange = 32
+)
+
+print('computing disparity...')
+disp = stereo.compute(imgL, imgR).astype(np.float32) / 16.0
+
+print('generating 3d point cloud...',)
+h, w = imgL.shape[:2]
+
+f = 394.59508339
+Q = np.float32([[1, 0,  0, -0.5*w],
+                [0, -1, 0, 0.5*h], # turn points 180 deg around x-axis,
+                [0, 0,  0, -f], # so that y-axis looks up
+                [0, 0, 1, 0]])
+points = cv.reprojectImageTo3D(disp, Q)
+
+#########################################
+#        solve color discrepancy        #
+#########################################
+# Use left image to color the model
+colors = cv.cvtColor(imgL, cv.COLOR_BGR2RGB)
+
+# Use right image
+colors1 = cv.cvtColor(imgR, cv.COLOR_BGR2RGB)
+
+# Perform the 'averaging' process of colors
+img_avg = np.zeros_like(imgL)
+for i in range(3):
+    U_L, D_L, V_L = np.linalg.svd(imgL[:, :, i])
+    U_R, D_R, V_R = np.linalg.svd(imgR[:, :, i])
+    avg_D = np.zeros((U_L.shape[1], V_L.shape[0]))
+    avg_D[:D_L.shape[0], :D_L.shape[0]] = np.diag((D_L + D_R)/2)
+    img_avg[:, :, i] = np.matmul(U_L, avg_D).dot(V_L)
+# Use avg color
+colors2 = cv.cvtColor(img_avg, cv.COLOR_BGR2RGB)
+
+mask = disp > disp.min()
+out_points = points[mask]
+
+# Using different color for the final output image
+out_colors = colors[mask]
+out_colors1 = colors1[mask]
+out_colors2 = colors2[mask]
+
+# Produce a series of 3D point cloud files.
+out_fn = 'out_left.ply'
+write_ply(out_fn, out_points, out_colors)
+print('%s saved' % out_fn)
+
+out_fn = 'out_right.ply'
+write_ply(out_fn, out_points, out_colors1)
+print('%s saved' % out_fn)
+
+out_fn = 'out_avg.ply'
+write_ply(out_fn, out_points, out_colors2)
+print('%s saved' % out_fn)
+
+cv.imshow('disparity', (disp-min_disp)/num_disp)
+cv.waitKey()
+cv.destroyAllWindows()
+print('Done')
 ```
 
