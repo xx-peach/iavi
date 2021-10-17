@@ -11,7 +11,7 @@
 
 
 
-## Introduction
+## 1 Introduction
 
 This report is about the fourth lab of the course **Intelligent Acquisition of Visual Information** in fall. 2021.
 
@@ -32,7 +32,7 @@ which would be discussed in details in the following sections.
 
 
 
-## Environment
+## 2 Environment
 
 The applications and packages used in this lab are:
 
@@ -43,29 +43,19 @@ The applications and packages used in this lab are:
 
 
 
-## Experiment Principles
+## 3 Experiment Principles
 
-### Camera calibration
+### 3.1 Camera calibration
 
-The methods and steps to do camera calibration is same as what we do in the previous labs.
+The methods and steps to do camera calibration is same as what we do in the previous labs, we could use the `opencv` functions to find the corners of the chessboard and then do calibration.
 
-We could use the `opencv` functions to find the corners of the chessboard and then do calibration.
+### 3.2 Decoding
 
-[这里可以放一张软件里生成的标出了角点的图片？（雾）]
-
-### Decoding
-
-Decoding is the process of finding the correspondence between the image pixels and patterns.
-
-The main concepts of this step is to use the bright and dark pattern projected by the projector to encode the  positions.
-
-[这里可以放一下我们生成的格雷码图片？（雾）]
+Decoding is the process of finding the correspondence between the image pixels and patterns, the main concepts of this step is to use the bright and dark pattern projected by the projector to encode the  positions.
 
 For example, if a position in the image undergoes a sequence of *bright-dark-bright-bright-dark-bright*, the code of the position is $101101  = 45$.
 
-[这里可以放一张软件里生成的那个五颜六色的图片？（雾）]
-
-### Projector calibration
+### 3.3 Projector calibration
 
 The mathematical model used to describe projector in this lab is actually the same as that of a camera. Thus, we could use the same method to calibrate the projector too.
 
@@ -75,13 +65,13 @@ $$
 $$
 where $H \in \R^{3\times 3}$ is the transformation matrix,  $p = [x, y, 1]^T$ in the image coordinates, $q = [col, row, 1]^T$ in the view of projector.
 
-### Stereo calibration
+### 3.4 Stereo calibration
 
 Stereo calibration means finding the relative rotation and translation between projector and camera, which have been realized in the previous labs.
 
 Similarly, we could use the `stereoCalibrate()` function from `opencv` to get the result.
 
-### Depth Measurement
+### 3.5 Depth Measurement
 
 After we calibrate the projector and camera, they can finally be used to implement the depth measuring for the given object. The mathematical principle underlying this procedure is surprisingly simple and elegant. Imagine there is a projector sitting next to the camera in front of the object we trying to capture, a series of specifically designed patterns (in this experiment, gray codes) will be projected to the target surface, while the pixels of the camera can capture those patterns from the view of camera. The whole scene can be expressed by the following graph:
 
@@ -99,13 +89,75 @@ Using this simple mathematical method, our group has also written our own progra
 
 The source code of this program can also be found on appendix.
 
-## Process of Experiment
+
+
+## 4 Process of Experiment
+
+### 4.1 Compute the Depth Map in Our Own Way
+
+这里可以放一下蔚哥方法的思路和代码以及结果（就是那个pad壳）
+
+### 4.2 Project Patterns and Calibrate Camera-Projector System
+
+Since the results got via our own approach seems a little weird, so we resort to the software provided in [Projector-Camera Calibration / 3D Scanning Software (brown.edu)](http://mesh.brown.edu/calibration/software.html) as an elegant sulotion.
+
+We wrote our own code to generate the desired gray coded projector images, the source code is in appendix and the images are shown below:
+
+<img src="./imgs/vertical/0_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/0_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_o.jpg" style="zoom:5%;" />
+
+<img src="./imgs/vertical/7_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/7_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_o.jpg" style="zoom:5%;" />
+
+<img src="./imgs/horizontal/4_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/4_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_o.jpg" style="zoom:5%;" />
+
+And then we project these gray coded images onto the chessboard, in order to correctly calibrate the camera-projector system, we took three group of image-projected chessboard images of different tilt angle, and we show part of each of them below:
+
+[每一个角度的照片都各放个4张左右]
+
+And then, we can decode all of these images to find the correspondence between the image pixels and patterns, we shown part of the decoded images below:
+
+[解码之后的图片放几张]
+
+And then, we can perform stereo calibration to get the relationship between the camera and projector, which are fixed during all the time, the calibration result is as follows:
+
+[校准之后的结果]
+
+#### 4.2.1 Problems we encountered
+
+1. the most significant one is that, at first we **got black and white upside down**, which means the gray coded images we generated take $0$ for white and $1$ for black. And as a result, the decode process is completely destroyed, the original decoded images are shown as follow:
+
+   [之前解码之后的图片可以放几张]
+
+2. once the lab started, the relative position of the camera and projector must be fixed, we can only adjust the angle of the chessboard since we need to do stereo calibration, how stupid are we to move the camera to adjust the angle;
+
+3. the brightness of the projected images may also exert some significant impact:
+
+   + if we adjust the exposure time too large, then the pictured images are too bright for the program to extract all the corners;
+   + if we adjust the exposure time too small, then the pictured images are too dark, which means it is hard to compare with two relative gray code project images, the decode process is ruined as a result;
+
+### 4.3 Project Patterns on the Objects
+
+#### 4.3.1 Project Patterns
+
+After calibration of the camera-projector system, we use the whole system to project the same gray patterns to our own objects, here is the first one:
+
+[放拍摄的物体的照片]
+
+#### 4.3.2 Establish the Correspondences between Camera and Projector Pixels
+We use the function `decode_pattern` to detect the pattern we project at chessboard, and the 3D points in the world coordinate system is computed as standard chessboard
+
+[放不同坐标系下点的坐标]
+
+Use the `camera_calibration` function to calibrate, and we can get the correspondences of all the pixels in the origin images and projector,
+
+#### 4.3.3 Reconstruct
+
+Using the code provided in the appendix to reconstruct the objects, the results are shown as follows:
+
+[3D重建的图]
 
 
 
-
-
-## Thoughts
+## 5 Thoughts
 
 In this experiment, we complete the depth measurement using structured lighting with one camera and one projector. Though most parts of the whole procedure was based on the software posted on http://mesh.brown.edu/calibration/, we didn't give up the chance to expand and practice the knowledge of projector-camera-based stereo vision we learnt from class. By studying the paper written by Daniel Moreno and Gabriel Taubin along with the source code of the software, we have the basic idea of how to calibrate the projector as a camera, why this can benefit the depth measuring process and how the whole system works. In addition to implement this whole process on the given software by rote, our group also have tried to develop our own depth measurement system. Although the result gained from our work looks not as cool as the result produced by the standard software, we still find it quite interesting and meaningful in turning those theories into something really workable in practice. 
 
