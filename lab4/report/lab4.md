@@ -103,29 +103,56 @@ Since the results got via our own approach seems a little weird, so we resort to
 
 We wrote our own code to generate the desired gray coded projector images, the source code is in appendix and the images are shown below:
 
-<img src="./imgs/vertical/0_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/0_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_o.jpg" style="zoom:5%;" />
+<img src="./imgs/vertical/0_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/0_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/1_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/2_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/3_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/4_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/5_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/6_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/7_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/7_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/4_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/4_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_o.jpg" style="zoom:5%;" />
 
-<img src="./imgs/vertical/7_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/7_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/8_o.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_r.jpg" style="zoom:5%;" /><img src="./imgs/vertical/9_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/0_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/1_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/2_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/3_o.jpg" style="zoom:5%;" />
+And then we project these gray coded images onto the chessboard, in order to correctly calibrate the camera-projector system, we took three group of image-projected chessboard images of different tilt angle, and we show one angle below:
 
-<img src="./imgs/horizontal/4_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/4_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/5_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/6_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/7_o.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_r.jpg" style="zoom:5%;" /><img src="./imgs/horizontal/8_o.jpg" style="zoom:5%;" />
-
-And then we project these gray coded images onto the chessboard, in order to correctly calibrate the camera-projector system, we took three group of image-projected chessboard images of different tilt angle, and we show part of each of them below:
-
-[每一个角度的照片都各放个4张左右]
+<img src="./imgs/angle1/1.png" style="zoom:3%;" /><img src="./imgs/angle1/2.png" style="zoom:3%;" /><img src="./imgs/angle1/3.png" style="zoom:3%;" /><img src="./imgs/angle1/4.png" style="zoom:3%;" /><img src="./imgs/angle1/5.png" style="zoom:3%;" /><img src="./imgs/angle1/6.png" style="zoom:3%;" /><img src="./imgs/angle1/7.png" style="zoom:3%;" /><img src="./imgs/angle1/8.png" style="zoom:3%;" /><img src="./imgs/angle1/9.png" style="zoom:3%;" /><img src="./imgs/angle1/10.png" style="zoom:3%;" /><img src="./imgs/angle1/11.png" style="zoom:3%;" /><img src="./imgs/angle1/12.png" style="zoom:3%;" /><img src="./imgs/angle1/13.png" style="zoom:3%;" /><img src="./imgs/angle1/14.png" style="zoom:3%;" /><img src="./imgs/angle1/15.png" style="zoom:3%;" /><img src="./imgs/angle1/16.png" style="zoom:3%;" /><img src="./imgs/angle1/17.png" style="zoom:3%;" /><img src="./imgs/angle1/18.png" style="zoom:3%;" /><img src="./imgs/angle1/19.png" style="zoom:3%;" /><img src="./imgs/angle1/20.png" style="zoom:3%;" /><img src="./imgs/angle1/21.png" style="zoom:3%;" /><img src="./imgs/angle1/22.png" style="zoom:3%;" /><img src="./imgs/angle1/23.png" style="zoom:3%;" /><img src="./imgs/angle1/24.png" style="zoom:3%;" /><img src="./imgs/angle1/25.png" style="zoom:3%;" /><img src="./imgs/angle1/26.png" style="zoom:3%;" /><img src="./imgs/angle1/27.png" style="zoom:3%;" /><img src="./imgs/angle1/28.png" style="zoom:3%;" /><img src="./imgs/angle1/29.png" style="zoom:3%;" /><img src="./imgs/angle1/30.png" style="zoom:3%;" /><img src="./imgs/angle1/31.png" style="zoom:3%;" /><img src="./imgs/angle1/32.png" style="zoom:3%;" /><img src="./imgs/angle1/33.png" style="zoom:3%;" /><img src="./imgs/angle1/34.png" style="zoom:3%;" /><img src="./imgs/angle1/35.png" style="zoom:3%;" /><img src="./imgs/angle1/36.png" style="zoom:3%;" /><img src="./imgs/angle1/37.png" style="zoom:3%;" /><img src="./imgs/angle1/38.png" style="zoom:3%;" />
 
 And then, we can decode all of these images to find the correspondence between the image pixels and patterns, we shown part of the decoded images below:
 
-[解码之后的图片放几张]
+<img src="./imgs/d1.png" style="zoom:45%;" /><img src="./imgs/d2.png" style="zoom:45%;" />
+
+<img src="./imgs/d3.png" style="zoom:50%;" />
 
 And then, we can perform stereo calibration to get the relationship between the camera and projector, which are fixed during all the time, the calibration result is as follows:
 
-[校准之后的结果]
+```yaml
+Camera Calib: 
+ - reprojection error: 1.60616
+ - K:
+[3506.75879408319, 0, 1238.159594621459;
+  0, 3511.744456879962, 1004.261154710307;
+  0, 0, 1]
+ - kc: [-0.2931278642407246, -6.172067060389632, -0.000831729044154422, 0.004724794951695461, 0]
+
+Projector Calib: 
+ - reprojection error: 0.53308
+ - K:
+[8761.753050346029, 0, 468.8776360760827;
+  0, 8826.310271488421, 413.5782143711002;
+  0, 0, 1]
+ - kc: [19.51836352675946, -20613.4956620585, -0.0003187728359299574, 0.07524481857198911, 0]
+
+Stereo Calib: 
+ - reprojection error: 10.4903
+ - R:
+[0.9831344844168168, -0.08997164655345816, 0.1592221352919853;
+  0.01630429071693604, 0.9102701278756434, 0.4136936842658797;
+  -0.1821558553950361, -0.4041205230048572, 0.8963848767307396]
+ - T:
+[-101.5556942442101;
+  -251.1587705712684;
+  3326.604783898938]
+```
+
+The result of the calibration is great, and we can see that the errors are relatively small.
 
 #### 4.2.1 Problems we encountered
 
 1. the most significant one is that, at first we **got black and white upside down**, which means the gray coded images we generated take $0$ for white and $1$ for black. And as a result, the decode process is completely destroyed, the original decoded images are shown as follow:
 
-   [之前解码之后的图片可以放几张]
+   ![](./imgs/w1.png)
 
 2. once the lab started, the relative position of the camera and projector must be fixed, we can only adjust the angle of the chessboard since we need to do stereo calibration, how stupid are we to move the camera to adjust the angle;
 
@@ -140,20 +167,24 @@ And then, we can perform stereo calibration to get the relationship between the 
 
 After calibration of the camera-projector system, we use the whole system to project the same gray patterns to our own objects, here is the first one:
 
-[放拍摄的物体的照片]
+<img src="./imgs/object/01.png" style="zoom:5%;" /><img src="./imgs/object/02.png" style="zoom:5%;" /><img src="./imgs/object/03.png" style="zoom:5%;" /><img src="./imgs/object/04.png" style="zoom:5%;" /><img src="./imgs/object/05.png" style="zoom:5%;" /><img src="./imgs/object/06.png" style="zoom:5%;" /><img src="./imgs/object/07.png" style="zoom:5%;" /><img src="./imgs/object/08.png" style="zoom:5%;" /><img src="./imgs/object/09.png" style="zoom:5%;" /><img src="./imgs/object/10.png" style="zoom:5%;" /><img src="./imgs/object/11.png" style="zoom:5%;" /><img src="./imgs/object/12.png" style="zoom:5%;" /><img src="./imgs/object/13.png" style="zoom:5%;" /><img src="./imgs/object/14.png" style="zoom:5%;" /><img src="./imgs/object/15.png" style="zoom:5%;" /><img src="./imgs/object/16.png" style="zoom:5%;" /><img src="./imgs/object/17.png" style="zoom:5%;" /><img src="./imgs/object/18.png" style="zoom:5%;" /><img src="./imgs/object/19.png" style="zoom:5%;" /><img src="./imgs/object/20.png" style="zoom:5%;" /><img src="./imgs/object/21.png" style="zoom:5%;" /><img src="./imgs/object/22.png" style="zoom:5%;" /><img src="./imgs/object/23.png" style="zoom:5%;" /><img src="./imgs/object/24.png" style="zoom:5%;" /><img src="./imgs/object/25.png" style="zoom:5%;" /><img src="./imgs/object/26.png" style="zoom:5%;" /><img src="./imgs/object/27.png" style="zoom:5%;" /><img src="./imgs/object/28.png" style="zoom:5%;" /><img src="./imgs/object/29.png" style="zoom:5%;" /><img src="./imgs/object/30.png" style="zoom:5%;" /><img src="./imgs/object/31.png" style="zoom:5%;" /><img src="./imgs/object/32.png" style="zoom:5%;" /><img src="./imgs/object/33.png" style="zoom:5%;" /><img src="./imgs/object/34.png" style="zoom:5%;" /><img src="./imgs/object/35.png" style="zoom:5%;" /><img src="./imgs/object/36.png" style="zoom:5%;" /><img src="./imgs/object/37.png" style="zoom:5%;" /><img src="./imgs/object/38.png" style="zoom:5%;" />
 
 #### 4.3.2 Establish the Correspondences between Camera and Projector Pixels
-We use the function `decode_pattern` to detect the pattern we project at chessboard, and the 3D points in the world coordinate system is computed as standard chessboard
+We use the function to detect the pattern we project at chessboard, and the 3D points in the world coordinate system is computed as standard chessboard
 
-[放不同坐标系下点的坐标]
+And use the function to calibrate, and we can get the correspondences of all the pixels in the origin images and projector:
 
-Use the `camera_calibration` function to calibrate, and we can get the correspondences of all the pixels in the origin images and projector,
+![](./imgs/y1.png)
+
+and the image in the projector's view is:
+
+![](./imgs/y2.png)
 
 #### 4.3.3 Reconstruct
 
 Using the code provided in the appendix to reconstruct the objects, the results are shown as follows:
 
-[3D重建的图]
+![](./imgs/3d.png)![](./imgs/4d.png)
 
 
 
