@@ -85,7 +85,25 @@ Here, $b$ is the distance between camera and projector, which is also called the
 
 Using this simple mathematical method, our group has also written our own program to perform a quite naive reconstruction of a given object.
 
-[可以放一个我们最初重建的那个三角锥？]
+### 3.6 Naive implementation
+
+As shown in the image below, we place a pencil case on the board, and took a series of photos.
+
+<img src="./imgs/o7.png" style="zoom:10%;" />
+
+The use the robust method to decode the gray code and get the result.
+
+<img src="./imgs/l.png" style="zoom:20%;" /><img src="./imgs/r.png" style="zoom:20%;" />
+
+Compare the position of corresponding patterns and we could get a rough estimation for the depth.
+
+The 3D point cloud generated is:
+
+<img src="./imgs/3d_1.png" style="zoom:25%;" />
+
+<img src="./imgs/3d_2.png" style="zoom:25%;" />
+
+The result isn't quite fulfilling, so we decide to turn to the software for help.
 
 The source code of this program can also be found on appendix.
 
@@ -555,5 +573,134 @@ void Application::reconstruct_model(int level, scan3d::Pointcloud & pointcloud, 
     }
     pointcloud.colors.copyTo(projector_view_list[level]);
 }
+```
+
+`./demo/process.ipynb`
+
+```python
+
+#############################################
+#            Naive Implementation           #
+#############################################
+
+import cv2
+import os
+import numpy as np
+
+ret = []
+path = './imgs/unknown'
+for i in range(1, 9):
+    o_path = os.path.join(path, 'o{}'.format(i) + '.png')
+    r_path = os.path.join(path, 'r{}'.format(i) + '.png')
+    o_img = cv2.cvtColor(cv2.imread(o_path), cv2.COLOR_BGR2GRAY)
+    r_img = cv2.cvtColor(cv2.imread(r_path), cv2.COLOR_BGR2GRAY)
+    res = np.zeros(o_img.shape)
+    res[o_img > r_img] = 1
+    ret.append(cv2.resize(res, dsize=(res.shape[1] // 2, res.shape[0] // 2)))
+    
+ret_none = []
+path = './imgs/unknown'
+for i in range(1, 9):
+    o_path = os.path.join(path, 'no{}'.format(i) + '.png')
+    r_path = os.path.join(path, 'nr{}'.format(i) + '.png')
+    o_img = cv2.cvtColor(cv2.imread(o_path), cv2.COLOR_BGR2GRAY)
+    r_img = cv2.cvtColor(cv2.imread(r_path), cv2.COLOR_BGR2GRAY)
+    res = np.zeros(o_img.shape)
+    res[o_img > r_img] = 1
+    ret_none.append(cv2.resize(res, dsize=(res.shape[1] // 2, res.shape[0] // 2)))
+    
+cv2.imshow('result1', ret[5])
+cv2.imshow('resilt2', ret_none[5])
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+ret = np.zeros(o_img.shape, dtype=np.uint8)
+path = './imgs/unknown'
+for i in range(1, 9):
+    o_path = os.path.join(path, 'o{}'.format(i) + '.png')
+    r_path = os.path.join(path, 'r{}'.format(i) + '.png')
+    o_img = cv2.cvtColor(cv2.imread(o_path), cv2.COLOR_BGR2GRAY)
+    r_img = cv2.cvtColor(cv2.imread(r_path), cv2.COLOR_BGR2GRAY)
+    ret *= 2
+    ret[o_img > r_img] += 1
+
+ret = cv2.resize(ret, dsize=(ret.shape[1] // 2, ret.shape[0] // 2))
+
+ret_none = np.zeros(o_img.shape, dtype=np.uint8)
+path = './imgs/unknown'
+for i in range(1, 9):
+    o_path = os.path.join(path, 'no{}'.format(i) + '.png')
+    r_path = os.path.join(path, 'nr{}'.format(i) + '.png')
+    o_img = cv2.cvtColor(cv2.imread(o_path), cv2.COLOR_BGR2GRAY)
+    r_img = cv2.cvtColor(cv2.imread(r_path), cv2.COLOR_BGR2GRAY)
+    ret_none *= 2
+    ret_none[o_img > r_img] += 1
+
+ret_none = cv2.resize(ret_none, dsize=(ret_none.shape[1] // 2, ret_none.shape[0] // 2))
+
+cv2.imshow('1', ret)
+cv2.imshow('2', ret_none)
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+imgL = ret
+imgR = ret_none
+
+cv2.imwrite('l.png', imgL)
+cv2.imwrite('r.png', imgR)
+
+imgl = imgL[100:550, 320:800]
+imgr = imgR[200:500, 320:800]
+
+cv2.imshow('left', imgl)
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+res = np.zeros(imgl.shape)
+for i in range(256):
+    a = np.where(imgl == i)
+    b = np.where(imgr == i)
+
+    if len(a[1]) == 0 or len(b[1]) == 0:
+        continue
+
+    res[imgl == i] = np.abs(np.mean(a[1]) - np.mean(b[1]))
+    
+res = res*10
+res = np.floor(res)
+res = res.astype(np.uint8)
+print(np.max(res))
+print(res.dtype)
+
+cv2.imshow('left', res)
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+t = np.hstack((res, imgl))
+cv2.imwrite('3.png', t)
+
+print(res.shape)
+points = [[i, j, res[i, j]] for i in range(res.shape[0]) for j in range(res.shape[1])]
+print(points[0])
+points = np.array(points)
+
+ply_header = '''ply
+format ascii 1.0
+element vertex %(vert_num)d
+property float x
+property float y
+property float z
+end_header
+'''
+
+def write_ply(fn, verts):
+    verts = verts.reshape(-1, 3)
+    # colors = colors.reshape(-1, 3)
+    # verts = np.hstack([verts, colors])
+    with open(fn, 'wb') as f:
+        f.write((ply_header % dict(vert_num=len(verts))).encode('utf-8'))
+        np.savetxt(f, verts, fmt='%f %f %f')
+        
+write_ply('out.ply', points)
 ```
 
