@@ -82,17 +82,28 @@ On the contrary, this article introduce a method of using the smart car to autom
 
 
 
-### Object Recognition and Tracking
-
-
-
 ### Path Determination
 
+In order to reconstruct an object into a 3D digital model, we need to take pictures of the target from different angles. And the best way to do this is to keep the object stay in the center of each photo so that we can achieve a high quality result. The simplest method to complete this task is to drive around the object in a perfect circle and make the camera focus on the target at the first place. However, due to some limits on the accuracy of hardware, it's impractical to let the car drive around in a standard circle. So our final solution is to let the car walk a rectangle around and keep a reasonable distance from the object so that the photos can cover every aspect of the object. Although it simplifies the controlling algorithm of the walking part, it also leads to another tricky problem: how to make sure that the object always stays in the frame while moving? If we enlarge the rectangle, we will lose a lot of details due to the larger distance. If we want to stay close to the target, then we must find a way to make the hold of camera adjust itself to keep the object in the center. And that brings us to the next part of our method. 
+
+### Object Recognition and Tracking during 
+
+As mention before, we need an algorithm for the holder of camera to adjust itself to force the camera to face directly towards the object. The first method popped in our head is to use object detection algorithm. We can use `Tensorflow` or `Pytorch` to build up a `CNN` so that it can mark all the object in one frame. After that, what we need to do is to adjust the holder according to the relative position of our target to the center of frame. But soon after designing and loading such a neural network to the micro-computer of this car and testing, our group have found this idea was impractical: first, the performance of the micro-computer on this car in running this neural network is rather pool, it can only process quite few pictures given a limited time and that contradicts to our original purpose that is to make the whole process faster. The other reason is that it can only recognize some certain targets that have been used to train the network, we don't want to limit our method to a finite region of objects. 
+
+Finally we work out a substitution that turns out quite efficient and accurate, that is to track some conspicuous features of our target which can be distinguished from the background. In this project we decided to let the holder to trace the unique color of our target while moving. This idea sounds a little easy and cheap, but it may be the optimal choice under such a limited computation force and needs of speed. In order to implement this method, there are some steps we need to follow:
+
+1.  Pick up a certain color of the object and set up the lower and upper bounds of the chosen color in `HSV` format. In our project we mostly use red.
+2. After the acquisition of pictures, we need to mark out the region with target color in the given picture. We can apply the thresholds defined in step one to design the corresponding mask.
+3. From the results of step 2, we need to work out the position of target region. Our group decides to use the center of the minimum enclosing circle of the area to stand for its position in the picture. Since there could be multiple areas with the same color, we choose the largest continuous region and use `cv2.findContours` and `cv2.minEnclosingCenter` to get the result.
+4. With the coordinate of the center of our target in the image plane, now we can set our camera facing towards the object. This can be done by calculating `PID` pulses and sending them to different motors of the camera holder. 
+
+At the beginning of our project, we decided to make intermittent stops with predefined intervals while moving. Again this contradicts to our general purpose to make it faster and sometimes the object can easily slip out of the frame if the step size is too large between two intervals. So we adopt `multi-thread programming` techniques in our method. We use two threads to perform different tasks so that now both parts of movement and camera adjustment can be carried out concurrently.
 
 
-### High Speed Photo Acquisition
 
+### High Quality Photo Acquisition
 
+Since we introduce the `multi-threading programming` technique to our algorithm in the last part, it's a natural thinking to add one more thread for capturing images. But the movements of both car and camera could cause motion blur. So we have to stop the car and camera before taking pictures. However, that wasn't enough to complete the task of image acquisition. Our group has encountered another tricky problem in this part. We found that sometimes we couldn't get the expected result from the camera and some pictures doesn't match the scene of the position from which it had been taken. In other words, a 'delay effect' of image caption has been observed. After looking up the some document of `Opencv` and analyzing the retrieved images, we inferred the problem lies in the function `cv2.VideoCapture`. In order to support the continuous playing of real-time video, the camera will capture images in a certain rate and store them in a buffer. And since we only use a small amount of images to support our algorithm, those unused images won't be flushed and keep accumulating so that new images couldn't get into the buffer. Thus we can't retrieve the result we want as a result of this delay. So in order to fix this problem, again we use a multi-thread solution. We create another thread that is to keep reading pictures from the buffer so that those unused images can be consumed in time and as a consequence the blocking of new incoming images can be avoided.
 
 ### 3D Reconstruction
 
